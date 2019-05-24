@@ -1,11 +1,17 @@
-The goal is to write a parser in Java that parses web server access log file, loads the log to MySQL and checks if a given IP makes more than a certain number of requests for the given duration. 
+The goal is to write a parser in Java that parses web server access log file, 
+loads the log to MySQL and checks if a given IP makes more than a certain number of requests 
+for the given duration. 
 
 Java
 ----
 
 (1) Create a java tool that can parse and load the given log file to MySQL. The delimiter of the log file is pipe (|)
 
-(2) The tool takes "startDate", "duration" and "threshold" as command line arguments. "startDate" is of "yyyy-MM-dd.HH:mm:ss" format, "duration" can take only "hourly", "daily" as inputs and "threshold" can be an integer.
+(2) The tool takes "accessLog", "startDate", "duration" and "threshold" as command line arguments. 
+    "accesslog" =/path/to/access log file
+    "startDate" is of "yyyy-MM-dd.HH:mm:ss" format, 
+    "duration" can take only "hourly", 
+    "daily" as inputs and "threshold" can be an integer.
 
 (3) This is how the tool works:
 
@@ -59,9 +65,9 @@ Deliverables
 (1) Java program that can be run from command line
 	
     java -cp "parser.jar" com.ef.Parser --accesslog=/path/to/file --startDate=2017-01-01.13:00:00 --duration=hourly --threshold=100 
-
+    java -jar parser.jar --startDate=2017-01-01.15:00:00 --duration=hourly --threshold=200
 (2) Source Code for the Java program
 
-(3) MySQL schema used for the log data
+(3) MySQL schema used for the log data - added schema.sql
 
-(4) SQL queries for SQL test
+(4) SQL queries for SQL test - added queries.sql
