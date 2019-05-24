@@ -1,0 +1,11 @@
+CREATE DATABASE parser;
+
+CREATE TABLE IF NOT EXISTS ACCESS_LOG (
+    log_id INT AUTO_INCREMENT,
+    ip VARCHAR(255) NOT NULL,
+    start_date DATE,
+    request VARCHAR(255) NOT NULL,,
+    status TINYINT NOT NULL,
+    user_agent TEXT,
+    PRIMARY KEY (log_id)
+)  ENGINE=INNODB;
