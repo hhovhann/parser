@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BlockedIpRepository extends CrudRepository<BlockedIp, Long> {
+    BlockedIp findByIpAddress(String ipAddress);
 }

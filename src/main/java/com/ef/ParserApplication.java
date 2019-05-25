@@ -65,7 +65,6 @@ public class ParserApplication implements ApplicationRunner {
                 // 4. Load all ip addresses to another MySQL table with comments on why it's blocked.
                 if (ipAddresses.size() > 0) {
                     blockedIpService.loadAllIpAddressesToDatabaseWithComment(ipAddresses);
-                    LOGGER.info("Following ip addresses was found and stored into blocked ip table {}: ", ipAddresses);
                 }
             } else {
                 LOGGER.error("Access log file empty or you are using wrong file. Please check");

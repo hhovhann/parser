@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BlockedIpService {
@@ -23,8 +24,15 @@ public class BlockedIpService {
     /***
      * Load all ip addresses into database with comments
      */
-   public void loadAllIpAddressesToDatabaseWithComment(List<String> allIps) {
+    public void loadAllIpAddressesToDatabaseWithComment(List<String> allIps) {
         // Save in blocked ip table
-       allIps.forEach(ip -> blockedIpRepository.save(new BlockedIp(ip, "This ip address made to many requests")));
+        allIps.forEach(ip -> {
+            BlockedIp blockedIp = blockedIpRepository.findByIpAddress(ip);
+            // To avoid ip duplication
+            if (Objects.isNull(blockedIp)) {
+                blockedIpRepository.save(new BlockedIp(ip, "This ip address made to many requests"));
+                LOGGER.info("Ip address {} stored into blocked ip table.: ", ip);
+            }
+        });
     }
 }
