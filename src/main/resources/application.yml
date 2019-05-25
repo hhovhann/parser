@@ -1,5 +1,7 @@
 spring:
   datasource:
+    hikari:
+      maximum-pool-size: 5
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/parser?cachePrepStmts=true&useServerPrepStmts=true&rewriteBatchedStatements=true&createDatabaseIfNotExist=true
     username: root

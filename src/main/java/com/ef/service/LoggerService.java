@@ -65,7 +65,7 @@ public class LoggerService {
      */
     public void loadAllDataToDatabase(String fileName) {
         if (loggerRepository.findAll().size() > 0) {
-            LOGGER.info("Do nothing. workaround for avoiding new ignore inserts more then 100k, " +
+            LOGGER.info("Do nothing. workaround for avoiding new inserts more then 100k, " +
                     "if you are running program more then once without cleaning database.");
         } else {
             // Parse log file(with format: Date|IP|Request|Status|User Agent) to Access log object
