@@ -29,6 +29,8 @@ GROUP BY log.ip_address
 HAVING COUNT(log.ip_address) > 100;
 
 -- (2) Write MySQL query to find requests made by a given IP.
+
+--     Ex: Write SQL to find requests with ip address 192.168.234.82.
 SELECT REQUEST
 FROM ACCESS_LOG
-WHERE IP_ADDRESS = '192.168.102.136';
+WHERE IP_ADDRESS = '192.168.234.82';

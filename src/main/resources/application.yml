@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/parser?rewriteBatchedStatements=true&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/parser?cachePrepStmts=true&useServerPrepStmts=true&rewriteBatchedStatements=true&createDatabaseIfNotExist=true
     username: root
     password: root
   jpa:
@@ -11,9 +11,12 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        type: trace
+        format_sql: false
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         jdbc:
           batch_size: 116484
+#          batch_versioned_data: true
         generate_statistics: true
         order_inserts: true
         order_updates: true

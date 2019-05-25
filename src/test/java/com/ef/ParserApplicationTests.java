@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -18,9 +17,6 @@ public class ParserApplicationTests {
 
 	@Test
 	public void contextLoads() {
-//		assertThat(this.applicationContext).isNotNull();
-//		assertThat(this.applicationContext.containsBean("databaseService")).isTrue();
-//		assertThat(this.applicationContext.containsBean("loggerService")).isTrue();
-//		assertThat(this.applicationContext.containsBean("parserApplication")).isTrue();
+
 	}
 }

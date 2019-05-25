@@ -1,33 +1,43 @@
 package com.ef;
 
-import com.ef.configuration.Duration;
-import com.ef.domain.AccessLog;
-import com.ef.domain.BlockedIp;
-import com.ef.repository.BlockedIpRepository;
-import com.ef.repository.LoggerRepository;
+import com.ef.service.BlockedIpService;
 import com.ef.service.LoggerService;
+import com.ef.service.TransformationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
+
 @SpringBootApplication
-public class ParserApplication implements CommandLineRunner {
+public class ParserApplication implements ApplicationRunner {
+
+    @Value("${accessLog}")
+    private String accessLogArg;
+    @Value("${startDate}")
+    private String startDateArg;
+    @Value("${duration}")
+    private String durationArg;
+    @Value("${threshold}")
+    private String thresholdArg;
+
     private static Logger LOGGER = LoggerFactory.getLogger(ParserApplication.class);
     private final LoggerService loggerService;
-    private final LoggerRepository loggerRepository;
-    private final BlockedIpRepository blockedIpRepository;
+    private final BlockedIpService blockedIpService;
+
 
     @Autowired
-    public ParserApplication(LoggerService loggerService, LoggerRepository loggerRepository, BlockedIpRepository blockedIpRepository) {
+    public ParserApplication(LoggerService loggerService, BlockedIpService blockedIpService) {
         this.loggerService = loggerService;
-        this.loggerRepository = loggerRepository;
-        this.blockedIpRepository = blockedIpRepository;
+        this.blockedIpService = blockedIpService;
     }
 
     public static void main(String[] args) {
@@ -37,44 +47,28 @@ public class ParserApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
-        LOGGER.info("Executing run method with args {}:", args);
-        if (args.length == 4) {
-            // Take program arguments from console
-            String fileName = args[0]; // access log file path
-            LocalDateTime startDate = LoggerService.parseStringToLocalDateTime(args[1]);
-            String duration = args[2]; // duration
-            LocalDateTime endDate = duration.equals(Duration.HOURLY.name()) ? startDate.plusHours(1L) : startDate.plusHours(24L);
-            Long threshold = Long.parseLong(args[3]);
-
-            // Parse log file(with format: Date|IP|Request|Status|User Agent) to Access log object
-            List<AccessLog> accessLogs = loggerService.parseFileToAccessLogObject(fileName);
-
-            if (loggerRepository.findAll().size() > 0) {
-                // Do nothing. workaround for avoiding duplication inserts,
-                // if you are running program more then once without cleaning database
-            } else {
-                // Save all access logs to the database if not empty accessLogs
-                loggerRepository.saveAll(accessLogs);
+    public void run(ApplicationArguments args) {
+        LOGGER.info("Application started with command-line arguments: {}", Arrays.toString(args.getSourceArgs()));
+        LOGGER.info("NonOptionArgs: {}", args.getNonOptionArgs());
+        LOGGER.info("OptionNames: {}", args.getOptionNames());
+        if (args.getOptionNames().size() == 4) {
+            // 0. Taking arguments from command line
+            LocalDateTime startDate = TransformationService.parseToLocalDateTime(startDateArg);          // start date
+            LocalDateTime endDate = TransformationService.retrieveEndDateTime(startDate, durationArg);  // end date
+            Long threshold = Long.parseLong(thresholdArg);                                             // threshold
+            // 1. Load all data from log file into database
+            loggerService.loadAllDataToDatabase(accessLogArg);
+            // 2. Retrieves all ip addresses filtered by predefined arguments
+            List<String> ipAddresses = loggerService.findIpAddressesByArguments(startDate, endDate, threshold);
+            // 3. Print all ip addresses filtered by predefined arguments to console
+            LOGGER.info("{} ipAddresses made more then {} requests, starting from {} to {}: ", ipAddresses, threshold, startDate, endDate);
+            // 4. Load all ip addresses to another MySQL table with comments on why it's blocked.
+            if (ipAddresses.size() > 0) {
+                blockedIpService.loadAllIpAddressesToDatabaseWithComment(ipAddresses);
             }
-
-            // Call logger repository proper query which will
-            // The tool will find any IPs that made more than 100 requests starting from 2017-01-01.13:00:00 to 2017-01-01.14:00:00 (one hour) and print them to console AND also load them to another MySQL table with comments on why it's blocked.
-            // Query based on coming parameters
-
-            // Find all IP Address made more then threshold requests  192.168.11.231
-            List<String> ips = loggerRepository.findIpAddresses(startDate, endDate, threshold);
-            LOGGER.info("{} ips made more then {} requests, starting from {} to {}: ", ips, threshold, startDate, endDate);
-            // Find all requests by Ip Address
-            // foreach allIps println requests
-            List<String> allRequests = loggerRepository.findRequestsByIpAddress("ip_address");
-
-            LOGGER.info("{} ip made more then {} requests, starting from {} to {}: ", "ip_address",
-                    threshold, startDate, endDate);
-            // Save in blocked ip table
-            blockedIpRepository.save(new BlockedIp("ip_address", "This ip address made to many requests"));
         } else {
-            LOGGER.error("Please check that you are passing all arguments: accesslog,  startDate, duration, threshold.");
+            LOGGER.error("Seems one of the arguments you forgot." +
+                    "Please check that you are passing all arguments: accesslog,  startDate, duration, threshold.");
         }
     }
 }

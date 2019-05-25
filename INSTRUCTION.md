@@ -65,8 +65,8 @@ Deliverables
 (1) Java program that can be run from command line
 	
     java -cp "parser.jar" com.ef.Parser --accesslog=/path/to/file --startDate=2017-01-01.13:00:00 --duration=hourly --threshold=100 
-    java -jar parser.jar --startDate=2017-01-01.15:00:00 --duration=hourly --threshold=200
-(2) Source Code for the Java program
+    java -jar parser.jar --accesslog=/path/to/file --startDate=2017-01-01.15:00:00 --duration=hourly --threshold=200
+(2) Source Code for the Java program - provided github ressource
 
 (3) MySQL schema used for the log data - added schema.sql
 

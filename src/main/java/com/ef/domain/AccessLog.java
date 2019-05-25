@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class AccessLog {
     @Id
     @Column(name = "LOG_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long logId;
 
     @Column(name = "IP_ADDRESS", nullable = false)

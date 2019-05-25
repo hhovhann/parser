@@ -19,7 +19,7 @@ public class BlockedIp {
     @Id
     @Column(name = "IP_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ipId;
+    private long blockedIpId;
 
     @Column(name = "IP_ADDRESS", nullable = false)
     private String ipAddress;
@@ -46,14 +46,14 @@ public class BlockedIp {
         BlockedIp rhs = (BlockedIp) obj;
         return new EqualsBuilder()
                 .appendSuper(super.equals(obj))
-                .append(ipId, rhs.ipId)
+                .append(blockedIpId, rhs.blockedIpId)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).
-                append(ipId).
+                append(blockedIpId).
                 toHashCode();
     }
 }
