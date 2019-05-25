@@ -64,12 +64,12 @@ public class LoggerService {
      * Load all data from log file into database
      */
     public void loadAllDataToDatabase(String fileName) {
-            // Parse log file(with format: Date|IP|Request|Status|User Agent) to Access log object
-            List<AccessLog> accessLogs = parseFileToAccessLogObject(fileName);
-            // Save all access logs to the database if not empty accessLogs
-            LOGGER.info("Please waiting ... All log data loading into the database. It can take a while :)");
-            loggerRepository.saveAll(accessLogs);
-            LOGGER.info("Log date successfully added into database");
+        // Parse log file(with format: Date|IP|Request|Status|User Agent) to Access log object
+        List<AccessLog> accessLogs = parseFileToAccessLogObject(fileName);
+        // Save all access logs to the database if not empty accessLogs
+        LOGGER.info("Please waiting ... All log data loading into the database. It can take a while :)");
+        loggerRepository.saveAll(accessLogs);
+        LOGGER.info("Log date successfully added into database");
     }
 
     /***

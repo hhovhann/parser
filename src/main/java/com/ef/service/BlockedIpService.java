@@ -26,6 +26,5 @@ public class BlockedIpService {
    public void loadAllIpAddressesToDatabaseWithComment(List<String> allIps) {
         // Save in blocked ip table
        allIps.forEach(ip -> blockedIpRepository.save(new BlockedIp(ip, "This ip address made to many requests")));
-       LOGGER.info("Added all ips into blocked ip table with comments");
     }
 }

@@ -49,7 +49,7 @@ public class ParserApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         final long startTime = System.currentTimeMillis();
-        LOGGER.debug("Application started with command line arguments: {}", Arrays.toString(args.getSourceArgs()));
+        LOGGER.info("Application started with command line arguments: {}", Arrays.toString(args.getSourceArgs()));
         if (args.getOptionNames().size() == 4) {
             // 0. Taking arguments from command line
             LocalDateTime startDate = TransformationService.parseToLocalDateTime(startDateArg);          // start date
@@ -61,11 +61,11 @@ public class ParserApplication implements ApplicationRunner {
                 // 2. Retrieves all ip addresses filtered by predefined arguments
                 List<String> ipAddresses = loggerService.findIpAddressesByArguments(startDate, endDate, threshold);
                 // 3. Print all ip addresses filtered by predefined arguments to console
-                LOGGER.debug("{} ipAddresses made more then {} requests, starting from {} to {}: ", ipAddresses, threshold, startDate, endDate);
+                LOGGER.info("{} ipAddresses made more then {} requests, starting from {} to {}: ", ipAddresses, threshold, startDate, endDate);
                 // 4. Load all ip addresses to another MySQL table with comments on why it's blocked.
                 if (ipAddresses.size() > 0) {
                     blockedIpService.loadAllIpAddressesToDatabaseWithComment(ipAddresses);
-                    LOGGER.info("Following ip address was found and store into blocked ip table{}: ", ipAddresses);
+                    LOGGER.info("Following ip addresses was found and stored into blocked ip table {}: ", ipAddresses);
                 }
             } else {
                 LOGGER.error("Access log file empty or you are using wrong file. Please check");
