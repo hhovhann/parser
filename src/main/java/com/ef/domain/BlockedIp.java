@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "BLOCKED_IP")
 public class BlockedIp {
     @Id
-    @Column(name = "IP_ID")
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long blockedIpId;
 

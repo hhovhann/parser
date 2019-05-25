@@ -8,15 +8,15 @@ spring:
     hibernate:
       # Hibernate ddl auto (create, create-drop, validate, update)
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         type: trace
         format_sql: false
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         jdbc:
-          batch_size: 116484
-#          batch_versioned_data: true
-        generate_statistics: true
+          batch_size: 50
+          batch_versioned_data: true
+        generate_statistics: false
         order_inserts: true
         order_updates: true

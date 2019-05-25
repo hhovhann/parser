@@ -10,7 +10,7 @@
 
 #### How to prepare jar file 
 mvn package -DskipTests
-mvn install -DskipTests
+ 
 
 #### How to run jar file from terminal
 
