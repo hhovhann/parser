@@ -48,7 +48,7 @@ public class ParserApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         LOGGER.debug("Application started with command line arguments: {}", Arrays.toString(args.getSourceArgs()));
         if (args.getOptionNames().size() == 4) {
             // 0. Taking arguments from command line
@@ -65,7 +65,7 @@ public class ParserApplication implements ApplicationRunner {
                 // 4. Load all ip addresses to another MySQL table with comments on why it's blocked.
                 if (ipAddresses.size() > 0) {
                     blockedIpService.loadAllIpAddressesToDatabaseWithComment(ipAddresses);
-                    LOGGER.info("Following ip address was found {}: ", ipAddresses);
+                    LOGGER.info("Following ip address was found and store into blocked ip table{}: ", ipAddresses);
                 }
             } else {
                 LOGGER.error("Access log file empty or you are using wrong file. Please check");
@@ -74,6 +74,7 @@ public class ParserApplication implements ApplicationRunner {
             LOGGER.error("Seems one of the arguments you forgot." +
                     "Please check that you are passing all arguments: accessLog, startDate, duration, threshold.");
         }
-        LOGGER.info("Application duration takes: {} nanoseconds", System.currentTimeMillis() - startTime);
+        long endTime = System.currentTimeMillis();
+        LOGGER.info("Application duration takes: {} milliseconds.", endTime - startTime);
     }
 }

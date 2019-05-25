@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,10 +17,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ACCESS_LOG")
-public class AccessLog {
+public class AccessLog implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "LOG_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long logId;
 
     @Column(name = "IP_ADDRESS", nullable = false)

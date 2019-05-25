@@ -14,9 +14,8 @@ spring:
         type: trace
         format_sql: false
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        jdbc:
-          batch_size: 50
-          batch_versioned_data: true
-        generate_statistics: false
-        order_inserts: true
-        order_updates: true
+#        jdbc:
+#          batch_size: 50
+#        generate_statistics: true
+#        order_inserts: true
+#        order_updates: true
