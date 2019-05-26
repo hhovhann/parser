@@ -64,6 +64,7 @@ public class AccessLog implements Serializable {
         return new EqualsBuilder()
                 .appendSuper(super.equals(obj))
                 .append(ipAddress, rhs.ipAddress)
+                .append(startDate, rhs.startDate)
                 .isEquals();
     }
 
@@ -71,6 +72,7 @@ public class AccessLog implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder(17, 37).
                 append(ipAddress).
+                append(startDate).
                 toHashCode();
     }
 }

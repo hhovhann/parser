@@ -49,14 +49,14 @@ public class BlockedIp implements Serializable {
         BlockedIp rhs = (BlockedIp) obj;
         return new EqualsBuilder()
                 .appendSuper(super.equals(obj))
-                .append(blockedIpId, rhs.blockedIpId)
+                .append(ipAddress, rhs.ipAddress)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).
-                append(blockedIpId).
+                append(ipAddress).
                 toHashCode();
     }
 }
