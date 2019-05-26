@@ -32,6 +32,8 @@ public class BlockedIpService {
             if (Objects.isNull(blockedIp)) {
                 blockedIpRepository.save(new BlockedIp(ip, "This ip address made to many requests"));
                 LOGGER.info("Ip address {} stored into blocked ip table.: ", ip);
+            } else {
+                LOGGER.info("Ip address {} already stored into blocked ip table.: ", ip);
             }
         });
     }
