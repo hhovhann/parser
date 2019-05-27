@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -69,11 +70,18 @@ public class LoggerService {
                     "if you are running program more then once without cleaning database.");
         } else {
             // Parse log file(with format: Date|IP|Request|Status|User Agent) to Access log object
-            List<AccessLog> accessLogs = parseFileToAccessLogObject(fileName);
+            List<AccessLog> logs = parseFileToAccessLogObject(fileName);
             // Save all access logs to the database if not empty accessLogs
             LOGGER.info("Please waiting ... All log data loading into the database. It can take a while :)");
-            loggerRepository.saveAll(accessLogs);
-            LOGGER.info("Log date successfully added into database");
+
+            try {
+                CompletableFuture<List<AccessLog>> future
+                        = CompletableFuture.supplyAsync(() -> loggerRepository.saveAll(logs));
+                List<AccessLog> accessLogs = future.get();
+                LOGGER.info("Log date successfully added into database",accessLogs);
+            } catch (ExecutionException | InterruptedException ex) {
+                LOGGER.info("Something happened : {}", ex);
+            }
         }
     }
 
